@@ -1,0 +1,6 @@
+fal-client
+dotenv
+fastapi
+uvicorn
+matplotlib
+python-multipart
