@@ -1,0 +1,2018 @@
+{
+  "name": "Athena Intern Assignment 1",
+  "nodes": [
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1P9bJBZvZwowbasT0WF8XCQWyQfS5468AHN6f35XWL5g",
+          "mode": "list",
+          "cachedResultName": "Assignment1_Input",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1P9bJBZvZwowbasT0WF8XCQWyQfS5468AHN6f35XWL5g/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1P9bJBZvZwowbasT0WF8XCQWyQfS5468AHN6f35XWL5g/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -800,
+        220
+      ],
+      "id": "7644b460-e15f-4bc8-9762-cdb6f63d452c",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "7ck1l8dT9Z5kvMTW",
+          "name": "lm.nguyen448@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Submits prompts to the Fal.ai via API server and retrieves the generated content when ready\n\nFal.ai is a model inference and finetuning service dedicated to AI image and video. It hosts many popular third party models including Flux by Black Forest Labs.",
+        "height": 720,
+        "width": 620
+      },
+      "id": "35935dcb-9540-4154-adc6-d46fbf577bb8",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -200,
+        -320
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1P9bJBZvZwowbasT0WF8XCQWyQfS5468AHN6f35XWL5g",
+          "mode": "list",
+          "cachedResultName": "Assignment1_Input",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1P9bJBZvZwowbasT0WF8XCQWyQfS5468AHN6f35XWL5g/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1P9bJBZvZwowbasT0WF8XCQWyQfS5468AHN6f35XWL5g/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Example_URL": "=https://api_athena.leminhnguyen.com/images/{{ $('Get image').item.json.images }}",
+            "Description": "={{ $('Generate prompt').item.json.output }}",
+            "Model": "={{ $json.format }}",
+            "Output_Format": "={{ $('Randomize format').item.json.format }}"
+          },
+          "matchingColumns": [
+            "Example_URL"
+          ],
+          "schema": [
+            {
+              "id": "Description",
+              "displayName": "Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Example_URL",
+              "displayName": "Example_URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Output_Format",
+              "displayName": "Output_Format",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Model",
+              "displayName": "Model",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "useAppend": true
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        1300,
+        -790
+      ],
+      "id": "4cfdf6ca-bf2d-417a-8a62-ca76984b94c4",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "7ck1l8dT9Z5kvMTW",
+          "name": "lm.nguyen448@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -160,
+        -665
+      ],
+      "id": "d1d3063b-3b33-41fd-bf68-43fdd2b0bc2e",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "images",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -380,
+        -665
+      ],
+      "id": "ab50d17f-d8c5-42e5-8766-9268ef79fc90",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "model": "gemma3:4b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        500,
+        -560
+      ],
+      "id": "31149000-b8b7-4682-99aa-e13f12c76d53",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "5meFS5FZHwIpUWW5",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Randomize format').item.json.format }}",
+                    "rightValue": "PNG",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "8127f7ff-8184-4ea5-8cf6-81d60ae90056"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "62c2886e-11f1-47eb-a791-81ea239fdebf",
+                    "leftValue": "={{ $('Randomize format').item.json.format }}",
+                    "rightValue": "JPG",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "9cde5a63-b7cf-4846-ab80-85d8109f16b5",
+                    "leftValue": "={{ $('Randomize format').item.json.format }}",
+                    "rightValue": "GIF",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0fe1d074-2ee3-4e11-a08d-038348ac186e",
+                    "leftValue": "={{ $('Randomize format').item.json.format }}",
+                    "rightValue": "MP3",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "allMatchingOutputs": true
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        860,
+        -860
+      ],
+      "id": "9734f334-74de-47b7-86a0-d48c9892ad14",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "37b0aac6-0ddb-4d48-b5cc-c09bf9182cdd",
+              "name": "format",
+              "value": "text to image",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1080,
+        -1140
+      ],
+      "id": "07443759-c0ad-46c3-8288-c83cde96e510",
+      "name": "PNG"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bc3b3e74-7d17-41d2-aa77-7eb026692dab",
+              "name": "format",
+              "value": "text to image",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1080,
+        -940
+      ],
+      "id": "6e8d7260-5719-452b-8c04-799dcd51fb5c",
+      "name": "JPG"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5e0842e9-9412-45e0-9d65-a38a12708dd2",
+              "name": "format",
+              "value": "image to video",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1080,
+        -740
+      ],
+      "id": "27916ee5-d82d-4c50-a0fe-ffe21e3746fb",
+      "name": "GIF"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fc999d83-0927-4a13-8455-c948678202ab",
+              "name": "format",
+              "value": "text to sound",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1080,
+        -540
+      ],
+      "id": "798ed7f6-3ae2-40f7-8d15-710682a8efcf",
+      "name": "MP3"
+    },
+    {
+      "parameters": {
+        "url": "https://api_athena.leminhnguyen.com/images",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -600,
+        -665
+      ],
+      "id": "8a259e93-b901-40a0-a3d4-84c1544a3155",
+      "name": "Get list of images",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "url": "=https://api_athena.leminhnguyen.com/images/{{ $json.images }}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        60,
+        -840
+      ],
+      "id": "dca53c86-a0fb-4ee0-ab62-b3f631b12d1b",
+      "name": "Get image",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "from random import randint\n\nformat = [\"PNG\", \"JPG\", \"GIF\", \"MP3\"]\n\nnum = randint(0, 3)\n\nreturn {\"format\": format[num]}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        -840
+      ],
+      "id": "7cba32ac-328c-4aca-bfdb-d7b34a2e781a",
+      "name": "Randomize format"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=- format: {{ $json.format }}\n- image: {{ $('Get image').item.json.images }}",
+        "options": {
+          "systemMessage": "Your mission is to analyse the png image of a game asset given and output a detailed prompt that is needed to generate a given format (png, jpg, gif, mp3).\n\nFor gif or audio, create a prompt that the object in the image may move or sound like.\n\nBe as detailed as possible and make sure the prompt copy the design style of the given image\n\nThe output should be only the prompt, do not output anything else"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        500,
+        -840
+      ],
+      "id": "45b66b49-2c9c-4821-bc67-929b5611ab4f",
+      "name": "Generate prompt"
+    },
+    {
+      "parameters": {
+        "content": "# Input generation\nThis flow generate input data (Description, ExampleURL, Format, Model) for assignment 1\nThis flow read the example image and output the prompt used to generate that image\nThis allow for automation in labelling and prompt generation",
+        "height": 780,
+        "width": 2300
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -800,
+        -1160
+      ],
+      "id": "2961d10b-6291-4dc6-bd31-18eb7779880f",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1020,
+        220
+      ],
+      "id": "0040e526-72a5-4151-b82b-aa07c959a8fb",
+      "name": "Generate Input"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Output_Format }}",
+                    "rightValue": "PNG",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "8127f7ff-8184-4ea5-8cf6-81d60ae90056"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "62c2886e-11f1-47eb-a791-81ea239fdebf",
+                    "leftValue": "={{ $json.Output_Format }}",
+                    "rightValue": "JPG",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "9cde5a63-b7cf-4846-ab80-85d8109f16b5",
+                    "leftValue": "={{ $json.Output_Format }}",
+                    "rightValue": "GIF",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0fe1d074-2ee3-4e11-a08d-038348ac186e",
+                    "leftValue": "={{ $json.Output_Format }}",
+                    "rightValue": "MP3",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "allMatchingOutputs": true
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -140,
+        20
+      ],
+      "id": "5262e2c2-bac9-4ddb-b7e2-54b6a3c4acbd",
+      "name": "Switch2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -360,
+        220
+      ],
+      "id": "53749096-bbb1-4d4e-ad33-cb367d8f9911",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C095BP2RAHL",
+          "mode": "list",
+          "cachedResultName": "all-athena-test"
+        },
+        "text": "=Success generated content:\nID: {{ $json.id }}\nName: {{ $json['file name'] }}\nStatus: {{ $json.status }}\nType: {{ $json['content type'] }}",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        1400,
+        40
+      ],
+      "id": "af3304ca-904a-4c66-9256-f9a4b78623c6",
+      "name": "Send a message",
+      "webhookId": "9427fa72-06b7-490a-abe4-8c841f858056",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "73o9Rtk3tFUxeXd8",
+          "name": "Slack account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "maxItems": 7
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -600,
+        220
+      ],
+      "id": "66844e39-8b3d-48c6-a243-e48714477091",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "content": "## Limit to save cost",
+        "height": 280,
+        "width": 150,
+        "color": 5
+      },
+      "id": "71058426-8b07-492c-afff-54350c23f008",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -620,
+        100
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api_athena.leminhnguyen.com/generate/audio",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "prompt",
+              "value": "={{ $json.Description }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        80,
+        240
+      ],
+      "id": "50848f5a-cdd4-41e0-893f-4288aabae845",
+      "name": "Audio"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api_athena.leminhnguyen.com/generate/video",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "prompt",
+              "value": "={{ $json.Description }}"
+            },
+            {
+              "name": "image",
+              "value": "={{ $json.Example_URL }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        80,
+        40
+      ],
+      "id": "a90e1ee5-0e98-4bc4-9fe3-c71501993202",
+      "name": "Video"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api_athena.leminhnguyen.com/generate/image",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "prompt",
+              "value": "={{ $json.Description }}"
+            },
+            {
+              "name": "output_format",
+              "value": "={{ $json.Output_Format.toLowerCase() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        80,
+        -160
+      ],
+      "id": "35918eca-4b83-42ec-8952-edaf6259acf7",
+      "name": "Images"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1612fe65-998c-46d1-93ac-e21273161998",
+              "name": "output",
+              "value": "={{ $json.url }}",
+              "type": "string"
+            },
+            {
+              "id": "25bc003e-3cb4-46e3-b1ea-119de71e08a1",
+              "name": "content_type",
+              "value": "={{ $json.content_type }}",
+              "type": "string"
+            },
+            {
+              "id": "8c19380a-0ad3-4c4c-81d1-c5e16f92d7c3",
+              "name": "file_name",
+              "value": "={{ $json.file_name }}",
+              "type": "string"
+            },
+            {
+              "id": "6b83ae34-6729-46e8-a9f7-72c6a8873211",
+              "name": "file_size",
+              "value": "={{ $json.file_size }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        300,
+        240
+      ],
+      "id": "4c8d52ac-fd3c-43d2-8253-cb599b100fa3",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1612fe65-998c-46d1-93ac-e21273161998",
+              "name": "output",
+              "value": "={{ $json.url }}",
+              "type": "string"
+            },
+            {
+              "id": "25bc003e-3cb4-46e3-b1ea-119de71e08a1",
+              "name": "content_type",
+              "value": "={{ $json.content_type }}",
+              "type": "string"
+            },
+            {
+              "id": "8c19380a-0ad3-4c4c-81d1-c5e16f92d7c3",
+              "name": "file_name",
+              "value": "={{ $json.file_name }}",
+              "type": "string"
+            },
+            {
+              "id": "6b83ae34-6729-46e8-a9f7-72c6a8873211",
+              "name": "file_size",
+              "value": "={{ $json.file_size }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        300,
+        40
+      ],
+      "id": "9e99e387-6ffb-46fe-bfcc-141388451819",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1612fe65-998c-46d1-93ac-e21273161998",
+              "name": "output",
+              "value": "={{ $json.url }}",
+              "type": "string"
+            },
+            {
+              "id": "25bc003e-3cb4-46e3-b1ea-119de71e08a1",
+              "name": "content_type",
+              "value": "={{ $json.content_type }}",
+              "type": "string"
+            },
+            {
+              "id": "8c19380a-0ad3-4c4c-81d1-c5e16f92d7c3",
+              "name": "width",
+              "value": "={{ $json.width }}",
+              "type": "string"
+            },
+            {
+              "id": "6b83ae34-6729-46e8-a9f7-72c6a8873211",
+              "name": "file_size",
+              "value": "={{ $json.height }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        300,
+        -160
+      ],
+      "id": "f674f51c-7b49-43a9-b848-71b3fad2e3ed",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1G1n8ovjNHdHS-VMTMZtw-7dvunxyayMk",
+          "mode": "list",
+          "cachedResultName": "Picture",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1G1n8ovjNHdHS-VMTMZtw-7dvunxyayMk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        740,
+        -160
+      ],
+      "id": "2924e32b-83c2-4fb1-8ad7-2cebb44fc57d",
+      "name": "Upload file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "hvGw0PR81uJ8Nwyt",
+          "name": "lm.nguyen448@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "19o6ONjqvACE4z-aqCKb12POV3z-nvn1T",
+          "mode": "list",
+          "cachedResultName": "Video",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/19o6ONjqvACE4z-aqCKb12POV3z-nvn1T"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        740,
+        40
+      ],
+      "id": "c4b7f308-234d-4852-97e7-62e3a10472be",
+      "name": "Upload file1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "hvGw0PR81uJ8Nwyt",
+          "name": "lm.nguyen448@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1vTl9PUrd9CLkWL74k6GTcGSxqwokZHzL",
+          "mode": "list",
+          "cachedResultName": "Audio",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1vTl9PUrd9CLkWL74k6GTcGSxqwokZHzL"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        740,
+        240
+      ],
+      "id": "40d87c5c-50e2-45ff-8b55-8855e92172de",
+      "name": "Upload file2",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "hvGw0PR81uJ8Nwyt",
+          "name": "lm.nguyen448@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        520,
+        -160
+      ],
+      "id": "e042563f-ce9d-43f4-ae9b-91734b0964af",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        520,
+        40
+      ],
+      "id": "ab5a3a4b-700d-4764-b8a0-6b014d8d2727",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        520,
+        240
+      ],
+      "id": "5b33b4dc-ebd0-4761-8b78-80ec9db80dd6",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "log",
+          "mode": "list",
+          "cachedResultName": "log"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "url": "={{ $json.output }}",
+            "content type": "={{ $json.content_type }}",
+            "status": "Success",
+            "file size": "={{ $json.file_size }}",
+            "file name": "={{ $json.file_name }}",
+            "width": "={{ $json.width }}",
+            "height": "={{ $json.width }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "content type",
+              "displayName": "content type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "width",
+              "displayName": "width",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "height",
+              "displayName": "height",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "file name",
+              "displayName": "file name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "file size",
+              "displayName": "file size",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1180,
+        40
+      ],
+      "id": "fda9cc98-1434-4398-94ff-b4105227b977",
+      "name": "Insert rows in a table",
+      "credentials": {
+        "postgres": {
+          "id": "BM6RRcmaAje3a4zd",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1612fe65-998c-46d1-93ac-e21273161998",
+              "name": "output",
+              "value": "={{ $('Edit Fields').item.json.output }}",
+              "type": "string"
+            },
+            {
+              "id": "25bc003e-3cb4-46e3-b1ea-119de71e08a1",
+              "name": "content_type",
+              "value": "={{ $('Edit Fields').item.json.content_type }}",
+              "type": "string"
+            },
+            {
+              "id": "8c19380a-0ad3-4c4c-81d1-c5e16f92d7c3",
+              "name": "file_name",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "6b83ae34-6729-46e8-a9f7-72c6a8873211",
+              "name": "file_size",
+              "value": "={{ $('Edit Fields').item.json.file_size }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        960,
+        240
+      ],
+      "id": "bcfc0d94-100b-41c7-b3ad-0c06a70e48bf",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1612fe65-998c-46d1-93ac-e21273161998",
+              "name": "output",
+              "value": "={{ $('Edit Fields2').item.json.output }}",
+              "type": "string"
+            },
+            {
+              "id": "25bc003e-3cb4-46e3-b1ea-119de71e08a1",
+              "name": "content_type",
+              "value": "={{ $('Edit Fields2').item.json.content_type }}",
+              "type": "string"
+            },
+            {
+              "id": "8c19380a-0ad3-4c4c-81d1-c5e16f92d7c3",
+              "name": "width",
+              "value": "={{ $('Edit Fields2').item.json.width }}",
+              "type": "string"
+            },
+            {
+              "id": "6b83ae34-6729-46e8-a9f7-72c6a8873211",
+              "name": "file_size",
+              "value": "={{ $('Edit Fields2').item.json.height }}",
+              "type": "string"
+            },
+            {
+              "id": "bf7760b1-0d8f-409b-a957-99ffe5e24eb6",
+              "name": "file_name",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        960,
+        -160
+      ],
+      "id": "a61da284-14eb-42a1-a4b2-5256e2b3c05e",
+      "name": "Edit Fields5"
+    },
+    {
+      "parameters": {
+        "content": "## Prepare data and upload to google drive",
+        "height": 700,
+        "width": 640
+      },
+      "id": "dc84b301-5466-4a80-872b-d56366518b55",
+      "name": "Sticky Note4",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        440,
+        -300
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1612fe65-998c-46d1-93ac-e21273161998",
+              "name": "output",
+              "value": "={{ $('Edit Fields1').item.json.output }}",
+              "type": "string"
+            },
+            {
+              "id": "25bc003e-3cb4-46e3-b1ea-119de71e08a1",
+              "name": "content_type",
+              "value": "={{ $('Edit Fields1').item.json.content_type }}",
+              "type": "string"
+            },
+            {
+              "id": "8c19380a-0ad3-4c4c-81d1-c5e16f92d7c3",
+              "name": "file_name",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "6b83ae34-6729-46e8-a9f7-72c6a8873211",
+              "name": "file_size",
+              "value": "={{ $('Edit Fields1').item.json.file_size }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        960,
+        40
+      ],
+      "id": "1aa7252e-960a-4b88-998d-cca324c20cf2",
+      "name": "Edit Fields6"
+    },
+    {
+      "parameters": {
+        "sendTo": "nguyenlm22416c@st.uel.edu.vn",
+        "subject": "Athena-Demo",
+        "message": "=Success generated content:\nID: {{ $('Insert rows in a table').item.json.id }}\nName: {{ $('Insert rows in a table').item.json['file name'] }}\nStatus: {{ $('Insert rows in a table').item.json.status }}\nType: {{ $('Insert rows in a table').item.json['content type'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1620,
+        220
+      ],
+      "id": "3a7ac694-8681-4bb1-adbb-188683b807dc",
+      "name": "Send a message1",
+      "webhookId": "0de57fc2-8bac-4f6d-af9b-186e4ad02090",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "QCaxQicm9xUxRZAX",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "log",
+          "mode": "list",
+          "cachedResultName": "log"
+        },
+        "returnAll": true,
+        "options": {
+          "outputColumns": [
+            "content type",
+            "status"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -580,
+        600
+      ],
+      "id": "8ebf8cc5-6859-48b8-b8e0-aba60f941573",
+      "name": "Select rows from a table",
+      "credentials": {
+        "postgres": {
+          "id": "BM6RRcmaAje3a4zd",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "nguyenlm22416c@st.uel.edu.vn",
+        "subject": "Athena-Demo-Report",
+        "message": "={{ $json.output }}",
+        "options": {
+          "attachmentsUi": {
+            "attachmentsBinary": [
+              {}
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        440,
+        600
+      ],
+      "id": "ba358a5b-ea95-484c-883b-2d479b0d016d",
+      "name": "Send a message2",
+      "webhookId": "0de57fc2-8bac-4f6d-af9b-186e4ad02090",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "QCaxQicm9xUxRZAX",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "content type"
+            },
+            {
+              "fieldToAggregate": "status"
+            }
+          ]
+        },
+        "options": {
+          "keepMissing": true
+        }
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -360,
+        600
+      ],
+      "id": "b0ec2d5f-f278-4330-ae74-fec834a51191",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "content": "## Update database and send notif to Slack and Email",
+        "height": 460,
+        "width": 660
+      },
+      "id": "6c1759ba-65b3-458c-9322-a91e4baf7c62",
+      "name": "Sticky Note5",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1140,
+        -40
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=- Log data:\n  + content type: {{ $('Aggregate').item.json['content type'] }}\n  + status: {{ $('Aggregate').item.json.status }}\n  + note: content type and status map to each other (first item of content type match with first item of status)",
+        "options": {
+          "systemMessage": "You are a summary agent, you mission is to look at the log from a database and make a comprehensive report. Output a single paragraph analysing the data"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -140,
+        600
+      ],
+      "id": "8f8ca1ba-bb27-4517-a616-b7c27b432f2d",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "gemma3:4b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        -60,
+        820
+      ],
+      "id": "105a686c-1407-407a-b0d2-e2d2b54af478",
+      "name": "Ollama Chat Model1",
+      "credentials": {
+        "ollamaApi": {
+          "id": "5meFS5FZHwIpUWW5",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Simulate Daily Report",
+        "height": 460,
+        "width": 1320
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -660,
+        520
+      ],
+      "typeVersion": 1,
+      "id": "dd900f48-ce14-474d-aa84-94ad37bf196f",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api_athena.leminhnguyen.com/report/chart",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "type",
+              "value": "={{ $('Aggregate').item.json['content type'] }}"
+            },
+            {
+              "name": "status",
+              "value": "={{ $('Aggregate').item.json.status }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        600
+      ],
+      "id": "fad2e609-c795-4098-867c-f19d2d205305",
+      "name": "HTTP Request3"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1100,
+        -160
+      ],
+      "id": "baa3c15f-4b4d-4811-af18-7f64782f272c",
+      "name": "Generate an image",
+      "credentials": {
+        "openAiApi": {
+          "id": "9FuqPhG9JQHl4n2j",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Get image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate prompt",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "PNG",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "JPG",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "GIF",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "MP3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PNG": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "JPG": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GIF": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MP3": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get list of images": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get image": {
+      "main": [
+        [
+          {
+            "node": "Randomize format",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Randomize format": {
+      "main": [
+        [
+          {
+            "node": "Generate prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate prompt": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Input": {
+      "main": [
+        []
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [
+          {
+            "node": "Select rows from a table",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Switch2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch2": {
+      "main": [
+        [
+          {
+            "node": "Images",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Images",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Video",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audio": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Video": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Images": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Generate an image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Upload file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Upload file2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert rows in a table": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields5": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields6": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select rows from a table": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "40fd612f-69d9-4000-8f38-f8aca949a320",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "75df96dfa247e921d41531522101a6320e4c9d513968d2670b984e5652cd6be6"
+  },
+  "id": "81UiFFs2DoQfzkzZ",
+  "tags": []
+}
